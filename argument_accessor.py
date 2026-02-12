@@ -59,7 +59,7 @@ def _load_args():
 		kwargs = {key: value for key, value in metadata.items() if not key.startswith("_")}
 		parser.add_argument(arg_name, **kwargs)
 
-	args = parser.parse_args()
+	args, _unknown = parser.parse_known_args()
 	for name, value in vars(args).items():
 		_parse_arg(name, value)
 
@@ -69,6 +69,14 @@ def _parse_arg(name: str, value: object):
 	var_type = __annotations__[name]
 	casted_value = cast_arg(value, var_type)
 	setattr(_self, name, casted_value)
+
+
+# def _set_sensitive_in_logger():
+# 	from standalone import logger
+# 	for name, metadata in _arg_kwargs.items():
+# 		if metadata.get("_sensitive", False):
+# 			attribute_name = name.removeprefix("--").replace("-", "_")
+# 			logger.hide.add(getattr(_self, attribute_name))
 
 
 def _print_args():
@@ -93,4 +101,5 @@ def _print_args():
 
 
 _load_args()
-_print_args()
+# _set_sensitive_in_logger()
+# _print_args()

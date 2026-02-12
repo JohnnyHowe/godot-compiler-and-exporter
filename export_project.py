@@ -1,56 +1,56 @@
+"""
+Entry point for exporting a Godot project. Parses CLI args and validates
+required compile options.
+See README.md
+"""
+import argparse
 from pathlib import Path
-import argument_accessor
-import constants
+from typing import Optional
 
-from standalone.clone_repo import clone_if_required as clone_repo
-from standalone.export_project import export
-from standalone import export_preset_access
-from standalone.sanitise_path import sanitise_path
-
-from template_builder import build_template
+from scripts.generic import argparsing
+from scripts.export_project import export_project
 
 
-def _main():
-	clone_repo(
-		constants.TEMPLATE_CREATOR_PATH,
-		constants.TEMPLATE_CREATOR_URL
+def main():
+	parser = argparse.ArgumentParser()
+
+	parser.add_argument("project-root", type=Path)
+	parser.add_argument("godot-version")
+	parser.add_argument("export-preset-name")
+	parser.add_argument("export-path", type=Path)
+
+	parser.add_argument("--compile-options", action="append", help="key=value pair")
+	parser.add_argument("--encryption-key")
+
+	args, unknown = parser.parse_known_args()
+
+	print(f"Got unknown args: {unknown}")
+
+	argparsing.fix_names(args)
+	compile_options: dict = argparsing.arg_to_python(args.compile_options, dict)
+
+	if "target" not in compile_options:
+		raise Exception("requires --compile-options target=...")
+
+	project_root: Path = args.project_root.resolve()
+	godot_version: str = args.godot_version
+	export_preset_name: str = args.export_preset_name
+	export_path: Path = args.export_path.resolve()
+	encryption_key: Optional[str] = args.encryption_key
+
+	export_project(
+		project_root,
+		godot_version,
+		export_preset_name,
+		export_path,
+		compile_options,
+		encryption_key
 	)
-
-	print()
-
-	preset_accessor = export_preset_access.ExportPresetAccessor(argument_accessor.project_root / constants.EXPORT_PRESETS_FILENAME)
-	preset = preset_accessor.get_preset(argument_accessor.export_preset)
-
-	template_path = build_template(preset["platform"])
-
-	modify_preset(preset, template_path)
-	preset_accessor.save()
-
-	print()
-
-	export(
-		argument_accessor.project_root,
-		argument_accessor.debug,
-		argument_accessor.export_preset,
-		argument_accessor.export_path,
-		argument_accessor.encryption_key
-	)
-
-
-def modify_preset(preset: dict, template_path: Path):
-	encrypted = argument_accessor.encryption_key == None
-	preset["encrypt_pck"] = encrypted
-	preset["encrypt_directory"] = encrypted
-
-	preset["options"]["custom_template/release"] = sanitise_path(template_path)
-	preset["options"]["custom_template/debug"] = sanitise_path(template_path)
-
-	export_path = argument_accessor.export_path
-	export_path.parent.mkdir(parents=True, exist_ok=True)
-
-	preset["export_path"] = sanitise_path(export_path)
-			
 
 
 if __name__ == "__main__":
-	_main()
+	main()
+
+
+
+
