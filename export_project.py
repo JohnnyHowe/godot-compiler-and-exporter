@@ -1,7 +1,6 @@
 """
-Entry point for exporting a Godot project. Parses CLI args and validates
-required compile options.
-See README.md
+Entry point for exporting a Godot project. Parses CLI args and validates required compile options.
+Calls ./scripts/export_project.export_project with the command line args.
 """
 import argparse
 from pathlib import Path

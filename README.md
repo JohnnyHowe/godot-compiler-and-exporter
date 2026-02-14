@@ -1,5 +1,5 @@
 Wraps the build process.
-1. Compiles new build template (if required) (uses https://github.com/JohnnyHowe/godot-template-creator)
+1. Compiles new build template (if required) (uses https://github.com/JohnnyHowe/godot_template_creator)
 2. exports The project
 
 # TODO

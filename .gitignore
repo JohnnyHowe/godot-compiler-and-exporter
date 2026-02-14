@@ -185,3 +185,5 @@ AGENTS.md
 
 templates/
 templates_backup/
+export_templates/
+godot-source/
