@@ -4,6 +4,7 @@ Calls ./scripts/export_project.export_project with the command line args.
 """
 import argparse
 from pathlib import Path
+import secrets
 from typing import Optional
 
 from scripts.generic import argparsing
@@ -20,6 +21,7 @@ def main():
 
 	parser.add_argument("--compile-options", action="append", help="key=value pair")
 	parser.add_argument("--encryption-key")
+	parser.add_argument("--create-encryption-key", action="store_true")
 
 	args, unknown = parser.parse_known_args()
 
@@ -36,6 +38,9 @@ def main():
 	export_preset_name: str = args.export_preset_name
 	export_path: Path = args.export_path.resolve()
 	encryption_key: Optional[str] = args.encryption_key
+	
+	if not encryption_key and args.create_encryption_key:
+		encryption_key = secrets.token_hex(32)
 
 	export_project(
 		project_root,
