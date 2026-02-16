@@ -1,4 +1,5 @@
 from pathlib import Path
+import shlex
 import subprocess
 from typing import Optional
 
@@ -64,4 +65,6 @@ def export_project(
 	print("Exported project!")
 	print(export_path)
 	
-	# subprocess.run(["python", "run_web_build.py", export_path.parent])
+	run_command = ["python", "run_web_build.py", str(export_path.parent)]
+	print(shlex.join(run_command))
+	subprocess.run(run_command)
