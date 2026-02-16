@@ -2,8 +2,6 @@ import argparse
 from pathlib import Path
 import subprocess
 
-import constants
-
 
 def path_str(path: Path) -> str:
 	return str(path.resolve()).replace("\\\\", "/").replace("\\", "/")
