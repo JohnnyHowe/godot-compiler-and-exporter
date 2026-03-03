@@ -32,6 +32,7 @@ python export_project.py C:/Users/jon/my_project 4.6 Web \
 | `export-path` | `Path` | - | Overwrites `Export Path` in preset.<br>e.g. `C:/Users/jon/my_project/Builds/index.html` |
 | `--compile-options` | `string` | - | Arguments to pass to compiler.<br>* `target` is required.<br>* `platform` is set automatically (derived from preset)<br>e.g. `--compile-options target=template_debug --compile-options other-option=other-value`<br>https://docs.godotengine.org/en/4.4/contributing/development/compiling/index.html |
 | `--encryption-key` | `string` | - | Key to compile and export with.<br>If not set, build will not be signed.
+| `--create-encryption-key` | `bool` | `false` | Create a new single use encryption key.
 
 
 
