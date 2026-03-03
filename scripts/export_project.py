@@ -1,5 +1,6 @@
 from pathlib import Path
 import shlex
+import shutil
 import subprocess
 from typing import Optional
 
@@ -19,6 +20,10 @@ def export_project(
 		compile_options: dict,
 		encryption_key: Optional[str]
 ) -> None:
+	print("Found godot executable: " + shutil.which("godot"))
+	if shutil.which("godot") is None:
+		raise FileNotFoundError('Missing "godot" on PATH. Install Godot and ensure the "godot" executable is available.')
+
 	export_preset_accessor = ExportPresetAccessor.from_project(project_root)
 	preset = export_preset_accessor.get_preset(export_preset_name)
 
