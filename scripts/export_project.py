@@ -23,7 +23,7 @@ def export_project(
 	preset = export_preset_accessor.get_preset(export_preset_name)
 
 	all_compile_options = compile_options.copy()
-	all_compile_options["platform"] = preset["platform"]
+	all_compile_options["platform"] = preset["platform"].lower().removesuffix("desktop").strip()
 
 	templates_path = constants.TEMPLATES_PATH
 
