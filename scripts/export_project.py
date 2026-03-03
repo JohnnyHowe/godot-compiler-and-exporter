@@ -72,6 +72,6 @@ def export_project(
 	print("Exported project!")
 	print(export_path)
 	
-	run_command = ["python", "run_web_build.py", str(export_path.parent)]
-	print(shlex.join(run_command))
-	subprocess.run(run_command)
+	# run_command = ["python", "run_web_build.py", str(export_path.parent)]
+	# print(shlex.join(run_command))
+	# subprocess.run(run_command)
