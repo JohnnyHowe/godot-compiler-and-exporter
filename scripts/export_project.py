@@ -8,6 +8,7 @@ import constants
 
 from .godot_template_creator import create_template
 from .get_export_template_file_from_folder import get_export_template_file_from_folder
+from .godot_custom_preset_exporter.scripts.godot_export_preset_access import ExportPresetAccessor
 
 
 def export_project(
@@ -18,10 +19,11 @@ def export_project(
 		compile_options: dict,
 		encryption_key: Optional[str]
 ) -> None:
-	platform = "web"  # TODO
+	export_preset_accessor = ExportPresetAccessor.from_project(project_root)
+	preset = export_preset_accessor.get_preset(export_preset_name)
 
 	all_compile_options = compile_options.copy()
-	all_compile_options["platform"] = platform
+	all_compile_options["platform"] = preset["platform"]
 
 	templates_path = constants.TEMPLATES_PATH
 
