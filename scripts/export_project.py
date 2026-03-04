@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 import shlex
 import shutil
@@ -45,13 +46,14 @@ def export_project(
 
 	# Build preset overrides
 	encrypted = encryption_key is not None
-	full_template_path = template_path.resolve()
+	# full_template_path = _sanitise_path(os.path.relpath(template_path.resolve(), project_root))
+	full_template_path = _sanitise_path(template_path.resolve())
 
 	preset_overrides = {
 		"encrypt_pck": encrypted,
 		"encrypt_directory": encrypted,
 
-		"export_path": export_path,
+		"export_path": _sanitise_path(os.path.relpath(export_path.resolve(), project_root)),
 
 		"options": {
 			"custom_template/release": full_template_path,
@@ -75,3 +77,7 @@ def export_project(
 	# run_command = ["python", "run_web_build.py", str(export_path.parent)]
 	# print(shlex.join(run_command))
 	# subprocess.run(run_command)
+
+
+def _sanitise_path(path: Path) -> str:
+	return str(path).replace("\\\\", "/").replace("\\", "/")
